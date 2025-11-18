@@ -1,0 +1,23 @@
+# Binaries
+/bin/
+build/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go modules
+vendor/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Env
+.env
+.env.local
+
+# Logs
+*.log
