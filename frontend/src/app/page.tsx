@@ -42,7 +42,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AnimatedSection } from "@/components/animated-section";
 import { Sidebar } from "@/components/sidebar";
 
-type Toast = { type: "success" | "error" | "info"; message: string } | null;
+type ToastMessage = { type: "success" | "error" | "info"; message: string };
+type ToastType = ToastMessage["type"];
+type Toast = ToastMessage | null;
 
 const initialTransactionForm = () => ({
   type: "income" as "income" | "expense",
@@ -79,7 +81,7 @@ export default function HomePage() {
     setSession(getSession());
   }, []);
 
-  const showToast = useCallback((type: Toast["type"], message: string) => {
+  const showToast = useCallback((type: ToastType, message: string) => {
     setToast({ type, message });
     const timeout = setTimeout(() => setToast(null), 4500);
     return () => clearTimeout(timeout);
