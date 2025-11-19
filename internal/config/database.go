@@ -11,7 +11,7 @@ import (
 
 // NewDatabase opens a new GORM connection using Supabase settings.
 func NewDatabase(cfg *Config) (*gorm.DB, error) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=Asia/Jakarta",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=Asia/Jakarta prefer_simple_protocol=true",
 		cfg.Database.Host,
 		cfg.Database.User,
 		cfg.Database.Password,
@@ -25,7 +25,10 @@ func NewDatabase(cfg *Config) (*gorm.DB, error) {
 		logLevel = logger.Info
 	}
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true,
+	}), &gorm.Config{
 		Logger: logger.Default.LogMode(logLevel),
 	})
 	if err != nil {

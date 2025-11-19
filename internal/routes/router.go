@@ -1,11 +1,14 @@
 package routes
 
 import (
+	"time"
+
 	"kas-angkatan/internal/config"
 	"kas-angkatan/internal/controllers"
 	"kas-angkatan/internal/middleware"
 	"kas-angkatan/internal/repository"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -18,6 +21,14 @@ func SetupRouter(db *gorm.DB, cfg *config.Config) *gin.Engine {
 
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	transactionRepo := repository.NewTransactionRepository(db)
 	profileRepo := repository.NewProfileRepository(db)
