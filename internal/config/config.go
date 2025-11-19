@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Config represents application-wide configuration loaded from environment variables.
@@ -13,6 +14,7 @@ type Config struct {
 	SupabaseProjectURL    string
 	SupabaseServiceKey    string
 	SupabaseAnonPublicKey string
+	AllowedOrigins        []string
 	Database              DatabaseConfig
 }
 
@@ -35,6 +37,7 @@ func LoadConfig() (*Config, error) {
 		SupabaseProjectURL:    os.Getenv("SUPABASE_PROJECT_URL"),
 		SupabaseServiceKey:    os.Getenv("SUPABASE_SERVICE_KEY"),
 		SupabaseAnonPublicKey: os.Getenv("SUPABASE_ANON_KEY"),
+		AllowedOrigins:        getEnvAsSlice("CORS_ALLOWED_ORIGINS", "http://localhost:3000,https://ptik-kas-angkatann.vercel.app"),
 		Database: DatabaseConfig{
 			Host:     getEnv("DB_HOST", ""),
 			User:     getEnv("DB_USER", ""),
@@ -63,4 +66,17 @@ func getEnv(key, defaultValue string) string {
 		return value
 	}
 	return defaultValue
+}
+
+func getEnvAsSlice(key, defaultValue string) []string {
+	value := getEnv(key, defaultValue)
+	parts := strings.Split(value, ",")
+	result := make([]string, 0, len(parts))
+	for _, part := range parts {
+		trimmed := strings.TrimSpace(part)
+		if trimmed != "" {
+			result = append(result, trimmed)
+		}
+	}
+	return result
 }
