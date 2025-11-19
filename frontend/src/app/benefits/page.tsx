@@ -191,8 +191,8 @@ export default function BenefitsPage() {
               </Card>
 
               <Card className="rounded-[36px] border border-border/60 bg-card/95 p-6 shadow-xl shadow-black/10">
-                <div className="flex items-center gap-3">
-                  <Badge variant="secondary" className="rounded-full px-4 py-1 text-xs font-semibold">
+                  <div className="flex items-center gap-3">
+                  <Badge variant="outline" className="rounded-full border-primary/40 bg-primary/5 px-4 py-1 text-xs font-semibold text-primary">
                     Reminder
                   </Badge>
                   <p className="text-xs font-semibold uppercase tracking-[0.4em] text-muted-foreground">Jangan Lupa</p>
